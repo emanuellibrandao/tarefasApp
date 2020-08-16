@@ -33,7 +33,7 @@
 
   <ion-item Lines="none">
     <ion-label position="stacked">Gênero</ion-label>
-    <ion-select placeholder="Selecione">
+    <ion-select placeholder="Selecione" cancelText="Cancelar"> 
       <ion-select-option value="F">feminino</ion-select-option>
       <ion-select-option value="M">masculino</ion-select-option>
       <ion-select-option value="O">outro</ion-select-option>
@@ -52,19 +52,19 @@
 
   <ion-item Lines="none">
     <ion-label position="stacked">Senha</ion-label>
-    <ion-input type="text" placeholder="Escreva sua senha"></ion-input>
+    <ion-input type="password" placeholder="Escreva sua senha"></ion-input>
   </ion-item>
 
   <ion-item Lines="none">
     <ion-label position="stacked">Confirmar</ion-label>
-    <ion-input type="text" placeholder="Confirme a sua senha"></ion-input>
+    <ion-input type="password" placeholder="Confirme a sua senha"></ion-input>
   </ion-item>
 
   <ion-item button class="ion-button-ligth ion-text-center">
     <ion-label>SALVAR</ion-label>
   </ion-item>
 
-  <ion-button expand="full" fill="clear" color="light">
+  <ion-button expand="full" fill="clear" color="light" routerLink="/login">
     VOLTAR
   </ion-button>
 </ion-content>
