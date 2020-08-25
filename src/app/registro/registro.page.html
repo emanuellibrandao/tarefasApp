@@ -13,14 +13,14 @@
     </ion-item>
 
     <ion-item-divider color="primary">
-    <ion-label>
-      Digite seus dados
-    </ion-label>
-    </ion-item-divider>
+      <ion-label>
+        Digite seus dados
+      </ion-label>
+      </ion-item-divider>
 
   <ion-item Lines="none">
     <ion-label position="stacked">Nome</ion-label>
-    <ion-input type="text" placeholder="Digite seu nome"></ion-input>
+    <ion-input formControlName="nome" type="text" placeholder="Digite seu nome"></ion-input>
 
     <ng-container *ngFor="let erro of mensagens_validacao.nome">
       <span class="msg-erro"
@@ -33,7 +33,7 @@
 
   <ion-item Lines="none">
     <ion-label position="stacked">CPF</ion-label>
-    <ion-input type="text" placeholder="Digite seu CPF"></ion-input>
+    <ion-input formControlName="cpf" type="text" placeholder="Digite seu CPF"></ion-input>
   
     <ng-container *ngFor="let erro of mensagens_validacao.cpf">
       <span class="msg-erro"
@@ -89,7 +89,7 @@
   
   <ion-item Lines="none">
     <ion-label position="stacked">E-mail</ion-label>
-    <ion-input type="email" placeholder="Digite seu E-mail"></ion-input>
+    <ion-input formControlName="email" type="email" placeholder="Digite seu E-mail"></ion-input>
   
     <ng-container *ngFor="let erro of mensagens_validacao.email">
       <span class="msg-erro"
@@ -101,7 +101,7 @@
   </ion-item>
 
 
-  <ion-item Lines="none" class="line-bottom">
+  <ion-item Lines="none">
     <ion-label position="stacked">Senha</ion-label>
     <ion-input formControlName="senha" type="password" placeholder="Digite sua Senha"></ion-input>
 
@@ -116,7 +116,7 @@
 
   <ion-item Lines="none">
     <ion-label position="stacked">Confirmar</ion-label>
-    <ion-input type="password" placeholder="Confirme a sua senha"></ion-input>
+    <ion-input formControlName="confirmaSenha" type="password" placeholder="Confirme a sua senha"></ion-input>
   
     <ng-container *ngFor="let erro of mensagens_validacao.confirmaSenha">
       <span class="msg-erro"
@@ -127,6 +127,7 @@
 
   </ion-item>
 
+  
   <ion-item button class="ion-button-ligth ion-text-center">
     <ion-label>SALVAR</ion-label>
   </ion-item>
@@ -134,6 +135,6 @@
   <ion-button expand="full" fill="clear" color="light" routerLink="/login">
     VOLTAR
   </ion-button>
-  
+
   </form>
 </ion-content>
