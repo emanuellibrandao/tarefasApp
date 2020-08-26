@@ -22,7 +22,7 @@ public mensagens_validacao = {
   ],
   senha: [
     {tipo: 'required', mensagem: 'O campo senha é obrigatório!' }, 
-    {tipo: 'minLength', mensagem: 'A senha deve ter pelo menos 6 caracteres!' }
+    {tipo: 'minlength', mensagem: 'A senha deve ter pelo menos 6 caracteres!' }
   ]
 }; 
 
