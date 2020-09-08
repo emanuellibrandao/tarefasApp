@@ -47,9 +47,9 @@
     <ion-label position="stacked">Data de Nascimento</ion-label>
     <ion-datetime displayFormat="DD/MM/YYYY" placeholder="Selecione" cancelText="Cancelar" doneText="Ok"></ion-datetime>
   
-    <ng-container *ngFor="let erro of mensagens_validacao.dataDeNascimento">
+    <ng-container *ngFor="let erro of mensagens_validacao.dataNascimento">
       <span class="msg-erro"
-      *ngIf="formRegistro.get('dataDeNascimento').hasError(erro.tipo) && (formRegistro.get('dataDeNascimento').dirty || formRegistro.get('dataDeNascimento').touched)">
+      *ngIf="formRegistro.get('dataNascimento').hasError(erro.tipo) && (formRegistro.get('dataNascimento').dirty || formRegistro.get('dataNascimento').touched)">
       {{erro.mensagem}}
       </span>
     </ng-container>
@@ -126,8 +126,7 @@
 
   </ion-item>
 
-  
-  <ion-item button class="ion-button-ligth ion-text-center">
+  <ion-item button detail="false" lines="none" class="ion-text-center ion-button-ligth" (click)="salvarFormulario">
     <ion-label>SALVAR</ion-label>
   </ion-item>
 

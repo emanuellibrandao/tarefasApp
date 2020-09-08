@@ -3,6 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import { CpfValidator } from '../validators/cpf-validator';
 import { ComparacaoValidator } from '../validators/comparacao-validator';
+import { UsuariosService } from '../services/usuarios.service';
+import { AlertController } from '@ionic/angular';
+import { Usuario } from '../models/Usuario';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -27,7 +31,7 @@ public mensagens_validacao = {
     {tipo: 'invalido', mensagem: 'CPF inválido! '}
   ],
   
-  dataDeNascimento: [
+  dataNascimento: [
     {tipo: 'required', mensagem: 'O campo data de nascimento é obrigatório!' }
   ],
 
@@ -59,10 +63,14 @@ public mensagens_validacao = {
 
 }; 
 
-
-
-  constructor(private formBuilder: FormBuilder) { 
-    this.formRegistro = formBuilder.group({
+  constructor( 
+    private formBuilder: FormBuilder,
+    private usuariosService: UsuariosService,
+    public alertController: AlertController,
+    public router: Router
+    ){ 
+      
+      this.formRegistro = formBuilder.group({
       nome: ['', Validators.compose([Validators.required, Validators.minLength(3)])],
 
       cpf: ['', Validators.compose([
@@ -72,7 +80,7 @@ public mensagens_validacao = {
         CpfValidator.cpfValido
       ])],
 
-      dataDeNascimento: ['', Validators.compose([Validators.required])],
+      dataNascimento: ['', Validators.compose([Validators.required])],
 
       genero: ['', Validators.compose([Validators.required])],
 
@@ -88,15 +96,42 @@ public mensagens_validacao = {
     });
   }
 
-  ngOnInit() {
+ async ngOnInit() {
+    await this.usuariosService.buscarTodos();
+    console.log(this.usuariosService.listaUsuarios);
   }
 
-  public registro (){
+  public async salvarFormulario(){
     if(this.formRegistro.valid){
-      console.log('formulário válido!');
+
+      let usuario = new Usuario();
+      usuario.nome = this.formRegistro.value.nome;
+      usuario.cpf = this.formRegistro.value.cpf;
+      usuario.dataNascimento = new Date(this.formRegistro.value.dataNascimento);
+      usuario.genero = this.formRegistro.value.genero;
+      usuario.celular = this.formRegistro.value.celular;
+      usuario.email = this.formRegistro.value.email;
+      usuario.senha = this.formRegistro.value.senha;
+
+      if(await this.usuariosService.salvar(usuario)){
+        this.exibirAlerta('SUCESSO!', 'Usuário salvo com sucesso!');
+        this.router.navigateByUrl('/login');
+      }else{
+        this.exibirAlerta('ERRO!', 'Erro ao salvar o usuário!'); 
+      }
+ 
+    }else{
+      this.exibirAlerta('ADVERTENCIA!', 'Formulário invalido<br/>Verifique os campos do seu formulário');
     }
-    else{
-      console.log('formulário inválido!')
-    }
+  }
+
+  async exibirAlerta(titulo: string, mensagem: string) {
+    const alert = await this.alertController.create({
+      header: titulo,
+      message: mensagem,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 }
