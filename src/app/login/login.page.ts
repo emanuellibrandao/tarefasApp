@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import { Router } from '@angular/router';
+import { AlertController, ToastController } from '@ionic/angular';
+import { UsuariosService } from '../services/usuarios.service';
 
 
 @Component({
@@ -26,26 +28,71 @@ public mensagens_validacao = {
   ]
 }; 
 
-  constructor(private formBuilder: FormBuilder, private router: Router) { 
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private usuarioService: UsuariosService,
+    public toastController: ToastController,
+    public alertController: AlertController) { 
     this.formLogin = formBuilder.group({
     //campos que eu queira que meu formulario tenha 
     email: ['', Validators.compose([Validators.required, Validators.email])],
-    senha: ['', Validators.compose([Validators.required, Validators.minLength(6)])]  
+    senha: ['', Validators.compose([Validators.required, Validators.minLength(6)])], 
+    manterLogado : [false]
     });
-  }
+   }
 
   ngOnInit() {
   }
+  async ionViewWillEnter(){
+const usuarioLogado = await this.usuarioService.buscarUsuarioLogado();
+if(usuarioLogado && usuarioLogado.manterLogado){
+  this.router.navigateByUrl('/home');
+  this.presentToast();
+} else {
+  this.usuarioService.removerUsuarioLogado();
+}
+  }
 
-  public login(){ 
-    //verificando se a condicao é verdadeira
+  public async login (){
     if(this.formLogin.valid){
-      console.log('formulário válido!');
-      this.router.navigateByUrl("/home");
-    }
-    else{
-      console.log('formulário inválido!')
+      const usuario = await this.usuarioService.login(this.formLogin.value.email, 
+        this.formLogin.value.senha);
+
+      if(usuario){
+        usuario.manterLogado = this.formLogin.value.manterLogado;
+        this.usuarioService.salvarUsuarioLogado(usuario);
+        this.router.navigateByUrl('/home');
+        this.presentToast();
+      }else{
+this.presentAlert('ADVERTENCIA', 'USUÁRIO OU SENHA INVÁLIDOS!')
+      }
+      
+
+    }else {
+this.presentAlert('ERRO', 'Formulario invalido, confira os campos!');
     }
   }
 
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Login efetuado com sucesso!',
+      duration: 2000
+    });
+    toast.present();
+  }
+
+  async presentAlert(titulo: string, mensagem: string) {
+    const alert = await this.alertController.create({
+     
+      header: titulo,
+      message: mensagem,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
 }
+
+
